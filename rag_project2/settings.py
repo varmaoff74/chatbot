@@ -8,8 +8,12 @@ https://docs.djangoproject.com/en/6.0/topics/settings/
 
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
-"""
 
+--> pip install python-decouple
+--> python -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())"
+--> SECRET_KEY='your_newly_generated_50_character_string_here' --> add in the created .env
+"""
+from decouple import config
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -20,10 +24,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-u!jp5o-8nn7+0a5y=t99tfi)tv==e9*)47hvifv6y5uc'
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = []
 
