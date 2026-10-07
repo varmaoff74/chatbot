@@ -1,13 +1,15 @@
 from rag_project2 import settings
-from groq import Groq
+from openai import OpenAI
 
-client = Groq(api_key=settings.GROQ_API_KEY)
+client = OpenAI(api_key=settings.OPENAI_API_KEY)
 
 
 def generate_answer(question, context_chunks=None, history_text=None):
     context = ""
     if context_chunks:
         context = "\n\n".join(context_chunks)
+
+    history_text = history_text or ""
 
     prompt = f"""
         Use only the context below to answer the question. If the context does not contain enough information, 
@@ -27,10 +29,10 @@ def generate_answer(question, context_chunks=None, history_text=None):
     {question}
     """
 
-    response = client.chat.completions.create(
-        model="llama-3.3-70b-versatile",
-        temperature=0.1,
-        messages=[{"role": "user", "content": prompt}]
+    response = client.responses.create(
+        model=settings.OPENAI_MODEL,
+        max_output_tokens=1500,
+        input=prompt,
     )
 
-    return response.choices[0].message.content
+    return response.output_text
